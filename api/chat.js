@@ -6,7 +6,7 @@ export default async function handler(req, res) {
       apiKey: process.env.OPENAI_API_KEY
     });
 
-    const prompt = req.body.message || "Hello";
+    const prompt = req.body.message;
 
     const completion = await client.chat.completions.create({
       model: "gpt-4o-mini",
@@ -18,8 +18,9 @@ export default async function handler(req, res) {
     res.status(200).json({
       reply: completion.choices[0].message.content
     });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
+
+  } catch (error) {
+    console.error("API ERROR:", error);
+    res.status(500).json({ error: error.message });
   }
 }
